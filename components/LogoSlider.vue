@@ -86,6 +86,7 @@
     width: 100%;
     text-align: center;
     padding: 40px 0;
+    background-image: url('/images/Image.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

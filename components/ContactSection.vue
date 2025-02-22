@@ -131,7 +131,6 @@
   const contactPerson = ref({
     name: 'Nisa Sakar',
     position: 'Diyetisyen',
-    image: '/images/Image.jpeg',
   })
   // İletişim bilgileri
   const contactInfo = ref([
