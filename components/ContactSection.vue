@@ -10,7 +10,7 @@
               <!-- Kişi Bilgileri -->
               <div class="contact-image-wrap d-flex flex-wrap">
                 <img
-                  :src="contactPerson.image"
+                  src="/images/Image.jpeg"
                   class="img-fluid avatar-image"
                   :alt="contactPerson.name"
                 />
@@ -101,7 +101,7 @@
               </div>
               <div class="contact-image-wrap d-flex flex-wrap">
                 <i
-                  class="bi bi-google-play"
+                  class="bi bi-google"
                   style="font-size: 24px; color: #4285f4"
                 ></i>
                 <div class="d-flex flex-column justify-content-center ms-3">

@@ -4,7 +4,7 @@
         <div class="row">
           <div class="col-lg-6 col-12 mb-5 mb-lg-0">
             <img
-              :src="aboutImage"
+            src="/images/Image.jpeg" 
               class="custom-text-box-image img-fluid"
               alt="About Us"
             />
@@ -70,7 +70,7 @@
   import { ref, onMounted } from 'vue'
   import CounterBlock from './CounterBlock.vue'
   
-  const aboutImage = '/images/Image.jpeg';
+  
   const title = ref('Hakkımda')
   const subtitle = ref('Eğitim')
   const aboutDescription = ref('')
