@@ -25,20 +25,10 @@ export default defineNuxtConfig({
   // Vercel için optimize edilmiş nitro ayarları
   nitro: {
     preset: 'vercel',
-    // Sunucu tarafındaki isteklerin cache süresini arttırın
-    routeRules: {
-      '/**': { swr: 600 } // 10 dakikalık cache
-    },
-    // Sunucu tarafı fonksiyonlarının minify edilmesini sağlayın
-    minify: true
+   
   },
   
-  // Runtime config ekleyin
-  runtimeConfig: {
-    public: {
-      siteUrl: process.env.SITE_URL || 'https://nisasakar.com'
-    }
-  },
+ 
   
   // SSR etkinleştirin (varsayılan olarak etkin ama açıkça belirtin)
   ssr: true,
@@ -51,21 +41,6 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap'
   ],
   
-  // Build optimizasyonları
-  vite: {
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'vendor': ['vue', 'vue-router']
-          }
-        }
-      }
-    },
-    // Cold start süresini azaltmak için
-    optimizeDeps: {
-      include: ['vue', 'vue-router']
-    }
-  }
+  
 })
 
