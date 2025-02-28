@@ -1,4 +1,18 @@
 <template>
+  
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>
+
+<!-- <template>
     <section id="section_3" class="section section-padding">
       <div class="container">
         <div class="row">
@@ -141,4 +155,4 @@
     font-weight: bold;
   }
   </style>
-  
+   -->
