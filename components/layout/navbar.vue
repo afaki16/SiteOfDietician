@@ -35,7 +35,6 @@
     </header>
   </template>
   <script setup>
-  import { ref, onMounted, onUnmounted } from 'vue'
   
   const isScrolled = ref(false)
   const isMenuOpen = ref(false)
@@ -103,16 +102,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: start;
-  }
-  
-  .logo-image {
-    height: 40px;
-    width: 160px;
   }
   
   .nav-menu {
