@@ -43,7 +43,7 @@
   
   <script setup>
   import { ref, onMounted } from 'vue'
-  import axios from "axios";
+
   
   const mediumFeedUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@zmpkmhdyfg";
  const posts = ref([]);
@@ -51,12 +51,15 @@ const loading = ref(true);
 const error = ref(null);
 
 const fetchMediumPosts = async () => {
-  debugger
   try {
-    const response = await axios.get(mediumFeedUrl);
-    posts.value = response.data.items;
+    const response = await $fetch("/api/medium");
+    if (response.items) {
+      posts.value = response.items;
+    } else {
+      error.value = "Veri alınamadı.";
+    }
   } catch (err) {
-    error.value = "Veriler alınırken hata oluştu.";
+    error.value = "Bir hata oluştu.";
   } finally {
     loading.value = false;
   }
