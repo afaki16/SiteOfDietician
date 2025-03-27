@@ -12,7 +12,3 @@
   <script setup>
   // Component logic here
   </script>
-  
-  <style scoped>
-  /* Component styles here */
-  </style>

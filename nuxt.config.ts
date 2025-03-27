@@ -22,11 +22,11 @@ export default defineNuxtConfig({
     },
   },
   
-  // Vercel için optimize edilmiş nitro ayarları
-  nitro: {
-    preset: 'vercel',
+  
    
-  },
+    nitro: {
+      preset: 'node-server' // Node.js sunucu olarak çıkış alacak
+    },
   
  
   

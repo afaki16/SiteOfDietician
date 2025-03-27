@@ -11,6 +11,7 @@ useHead({
     { rel: "stylesheet", href: "/css/bootstrap-icons.css" },
     { rel: "stylesheet", href: "/css/bootstrap.min.css" },
     { rel: "stylesheet", href: "/css/style.css" },
+    { rel: "stylesheet", href: "/css/common.css" },
     {
       rel: 'icon',
       type: 'image/png',

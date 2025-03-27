@@ -1,18 +1,4 @@
 <template>
-  
-</template>
-
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>
-
-<!-- <template>
     <section id="section_3" class="section section-padding">
       <div class="container">
         <div class="row">
@@ -57,9 +43,28 @@ export default {
   
   <script setup>
   import { ref, onMounted } from 'vue'
+  import axios from "axios";
+  
+  const mediumFeedUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@zmpkmhdyfg";
+ const posts = ref([]);
+const loading = ref(true);
+const error = ref(null);
+
+const fetchMediumPosts = async () => {
+  debugger
+  try {
+    const response = await axios.get(mediumFeedUrl);
+    posts.value = response.data.items;
+  } catch (err) {
+    error.value = "Veriler alınırken hata oluştu.";
+  } finally {
+    loading.value = false;
+  }
+};
+
   const postImage = ref('')
   const sectionTitle = ref('Bilgilendiren Paylaşımalar')
-  const posts = ref([])
+  
   const cleanContent = content => {
     content = content.replace(/<img src="https:\/\/medium.com\/_\/stat?.+?>/g, '')
   
@@ -86,24 +91,11 @@ export default {
     return truncated
   }
   
-  const fetchPosts = async () => {
-    try {
-      const response = await fetch(
-        `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@zmpkmhdyfg`,
-      )
-      const data = await response.json()
-      posts.value = data.items
-    } catch (error) {
-      console.error('Yazılar yüklenirken hata:', error)
-    }
-  }
-  
   const formatDate = date => {
     return new Date(date).toLocaleDateString('tr-TR')
   }
-  onMounted(() => {
-    fetchPosts()
-  })
+
+  onMounted(fetchMediumPosts);
   </script>
   
   <style scoped>
@@ -155,4 +147,4 @@ export default {
     font-weight: bold;
   }
   </style>
-   -->
+  

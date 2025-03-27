@@ -7,11 +7,13 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@nuxtjs/robots": "^5.2.2",
     "@nuxtjs/sitemap": "^7.2.5",
+    "axios": "^1.8.4",
     "bootstrap-icons": "^1.11.3",
     "nuxt": "^3.15.4",
     "nuxt-simple-robots": "^3.1.10",
