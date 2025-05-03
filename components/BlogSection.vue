@@ -5,7 +5,7 @@
           <div class="col-lg-12 col-12 text-center mb-4">
             <h2>{{ sectionTitle }}</h2>
           </div>
-  
+          <!-- Blog yazıları geçici olarak devre dışı bırakıldı
           <div
             v-for="post in posts"
             :key="post.id"
@@ -36,15 +36,21 @@
               </div>
             </div>
           </div>
+          -->
         </div>
       </div>
     </section>
   </template>
   
-  <script setup>
+  <script setup lang="ts">
   import { ref, onMounted } from 'vue'
 
-  interface Post {
+  const sectionTitle = ref('Bilgilendiren Paylaşımalar')
+  const postImage = ref('')
+
+  // Blog yazıları geçici olarak devre dışı bırakıldı
+  /*
+  type Post = {
     id: string;
     title: string;
     content: string;
@@ -52,12 +58,12 @@
     pubDate: string;
   }
 
-  interface ApiResponse {
+  type ApiResponse = {
     error?: string;
     details?: string;
     items?: Post[];
   }
-
+  
   const mediumFeedUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@zmpkmhdyfg";
   const posts = ref<Post[]>([]);
   const loading = ref<boolean>(true);
@@ -91,9 +97,6 @@
     }
   };
 
-  const postImage = ref('')
-  const sectionTitle = ref('Bilgilendiren Paylaşımalar')
-  
   const cleanContent = content => {
     content = content.replace(/<img src="https:\/\/medium.com\/_\/stat?.+?>/g, '')
   
@@ -125,6 +128,7 @@
   }
 
   onMounted(fetchMediumPosts);
+  */
   </script>
   
   <style scoped>
