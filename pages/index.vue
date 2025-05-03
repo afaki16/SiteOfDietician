@@ -13,11 +13,10 @@
 <script setup>
 import { onMounted } from 'vue'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import ScrollTrigger from 'gsap/ScrollTrigger'
 
 onMounted(() => {
+  gsap.registerPlugin(ScrollTrigger)
   // Her section için timeline oluştur
   const createSectionTimeline = (selector, animations) => {
     const tl = gsap.timeline({
