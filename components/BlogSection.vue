@@ -44,26 +44,52 @@
   <script setup>
   import { ref, onMounted } from 'vue'
 
-  
-  const mediumFeedUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@zmpkmhdyfg";
- const posts = ref([]);
-const loading = ref(true);
-const error = ref(null);
-
-const fetchMediumPosts = async () => {
-  try {
-    const response = await $fetch("/api/medium");
-    if (response.items) {
-      posts.value = response.items;
-    } else {
-      error.value = "Veri alınamadı.";
-    }
-  } catch (err) {
-    error.value = "Bir hata oluştu.";
-  } finally {
-    loading.value = false;
+  interface Post {
+    id: string;
+    title: string;
+    content: string;
+    link: string;
+    pubDate: string;
   }
-};
+
+  interface ApiResponse {
+    error?: string;
+    details?: string;
+    items?: Post[];
+  }
+
+  const mediumFeedUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@zmpkmhdyfg";
+  const posts = ref<Post[]>([]);
+  const loading = ref<boolean>(true);
+  const error = ref<string | null>(null);
+
+  const fetchMediumPosts = async () => {
+    try {
+      loading.value = true;
+      error.value = null;
+      
+      const response = await $fetch<ApiResponse>("/api/medium");
+      
+      if (response.error) {
+        error.value = response.error;
+        if (response.details) {
+          console.error('Medium API Hatası:', response.details);
+        }
+        return;
+      }
+
+      if (response.items && Array.isArray(response.items)) {
+        posts.value = response.items;
+      } else {
+        error.value = "Veri formatı beklenen şekilde değil.";
+      }
+    } catch (err: any) {
+      error.value = "Bir hata oluştu: " + (err?.message || 'Bilinmeyen hata');
+      console.error('Blog yazıları yüklenirken hata:', err);
+    } finally {
+      loading.value = false;
+    }
+  };
 
   const postImage = ref('')
   const sectionTitle = ref('Bilgilendiren Paylaşımalar')
