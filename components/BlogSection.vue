@@ -1,3 +1,4 @@
+
 <template>
   <section id="section_3" class="section section-padding">
     <div class="container">
@@ -5,37 +6,58 @@
         <div class="col-lg-12 col-12 text-center mb-4">
           <h2>{{ sectionTitle }}</h2>
         </div>
-
-        <div
-          v-for="post in posts"
-          :key="post.id"
-          class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0"
-        >
-          <div class="custom-block-wrap">
-            <img
-              :src="postImage"
-              class="fixed-size-image custom-block-image img-fluid"
-              alt="asdgasdf"
-            />
-            <div class="d-flex align-items-center my-2">
-              <span class="date-chip mb-0">
-                {{ formatDate(post.pubDate) }}
-              </span>
-            </div>
-            <div class="custom-block">
-              <div class="custom-block-body">
-                <h5 class="mb-3">{{ post.title }}</h5>
-                <div
-                  v-html="truncateContent(post.content)"
-                  class="post-content"
-                ></div>
-              </div>
-              <a :href="post.link" target="_blank" class="custom-btn btn"
-                >Devamını Oku</a
-              >
-            </div>
+        
+        <!-- Loading göstergesi -->
+        <div v-if="loading" class="col-12 text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Yükleniyor...</span>
+          </div>
+          <p class="mt-2">Blog yazıları yükleniyor...</p>
+        </div>
+        
+        <!-- Hata mesajı -->
+        <div v-else-if="error" class="col-12 text-center">
+          <div class="alert alert-danger" role="alert">
+            {{ error }}
           </div>
         </div>
+        
+        <!-- Blog yazıları -->
+        <template v-else>
+          <div
+            v-for="post in posts"
+            :key="post.guid"
+            class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0"
+          >
+          <a :href="post.link" target="_blank">
+            <div class="custom-block-wrap">
+              <img
+                :src="getPostImage(post.description)"
+                class="fixed-size-image custom-block-image img-fluid"
+                :alt="post.title"
+                @error="handleImageError"
+              />
+              <div class="d-flex align-items-center my-2">
+                <span class="date-chip mb-0">
+                  {{ formatDate(post.pubDate) }}
+                </span>
+              </div>
+              <div class="custom-block">
+                <div class="custom-block-body">
+                  <h5 class="mb-3">{{ post.title }}</h5>
+                  <div
+                    v-html="truncateContent(post.description)"
+                    class="post-content"
+                  ></div>
+                </div>
+                <a :href="post.link" target="_blank" class="custom-btn btn"
+                  >Devamını Oku</a
+                >
+              </div>
+            </div>
+          </a>
+          </div>
+        </template>
       </div>
     </div>
   </section>
@@ -44,61 +66,95 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
+// State
+const posts = ref([])
+const loading = ref(true)
+const error = ref(null)
+const sectionTitle = ref('Bilgilendiren Paylaşımlar')
 
-const mediumFeedUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@zmpkmhdyfg";
-const posts = ref([]);
-const loading = ref(true);
-const error = ref(null);
+// Varsayılan görsel
+const defaultImage = '/images/default-blog-image.jpg'
 
+// API'den veri çekme
 const fetchMediumPosts = async () => {
-try {
-  const response = await $fetch("/api/medium");
-  if (response.items) {
-    posts.value = response.items;
-  } else {
-    error.value = "Veri alınamadı.";
+  try {
+    const response = await $fetch("/api/medium")
+    
+    if (response.error) {
+      throw new Error(response.error)
+    }
+    
+    if (response.items && response.items.length > 0) {
+      posts.value = response.items
+    } else {
+      error.value = "Henüz blog yazısı bulunmuyor."
+    }
+  } catch (err) {
+    console.error('Medium posts fetch error:', err)
+    error.value = err.message || "Blog yazıları yüklenirken bir hata oluştu."
+  } finally {
+    loading.value = false
   }
-} catch (err) {
-  error.value = "Bir hata oluştu.";
-} finally {
-  loading.value = false;
 }
-};
 
-const postImage = ref('')
-const sectionTitle = ref('Bilgilendiren Paylaşımalar')
-
-const cleanContent = content => {
-  content = content.replace(/<img src="https:\/\/medium.com\/_\/stat?.+?>/g, '')
-
+// Görseli çıkarma
+const getPostImage = (content) => {
+  if (!content) return defaultImage
+  
+  // Medium'un istatistik görsellerini temizle
+  content = content.replace(/<img[^>]*src="https:\/\/medium\.com\/_\/stat[^"]*"[^>]*>/g, '')
+  
+  // İlk görseli bul
   const imgMatch = content.match(/<img[^>]+src="([^">]+)"/)
-  postImage.value = imgMatch ? imgMatch[1] : ''
-  return content.trim()
+  return imgMatch ? imgMatch[1] : defaultImage
 }
 
-const truncateContent = content => {
-  // HTML'i temizle
-  content = cleanContent(content)
-
-  // HTML etiketlerini kaldır ve metni al
-  let plainText = content.replace(/<[^>]*>/g, '')
-
-  // İlk 100 karakteri al
+// İçeriği kesme ve düzenleme
+const truncateContent = (content) => {
+  if (!content) return ''
+  
+  // Medium'un istatistik görsellerini ve diğer gereksiz elementleri temizle
+  content = content.replace(/<img[^>]*src="https:\/\/medium\.com\/_\/stat[^"]*"[^>]*>/g, '')
+  
+  // HTML etiketlerini kaldır
+  const plainText = content.replace(/<[^>]*>/g, '')
+  
+  // İlk 150 karakteri al
   let truncated = plainText.substring(0, 150)
-
+  
   // Eğer metin kesilmişse "..." ekle
   if (plainText.length > 150) {
     truncated += '...'
   }
-
+  
   return truncated
 }
 
-const formatDate = date => {
-  return new Date(date).toLocaleDateString('tr-TR')
+// Tarih formatlama
+const formatDate = (date) => {
+  if (!date) return ''
+  
+  try {
+    return new Date(date).toLocaleDateString('tr-TR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  } catch (err) {
+    console.error('Date formatting error:', err)
+    return date
+  }
 }
 
-onMounted(fetchMediumPosts);
+// Görsel yükleme hatası
+const handleImageError = (event) => {
+  event.target.src = defaultImage
+}
+
+// Component mount olduğunda veriyi çek
+onMounted(() => {
+  fetchMediumPosts()
+})
 </script>
 
 <style scoped>
