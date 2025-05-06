@@ -5,21 +5,35 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'tr'
       },
-      meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        {
-          name: 'description',
-          content: 'Nisa Sakar, kişiye özel beslenme programları ile sağlıklı yaşam yolculuğuna adım atmanızı sağlar. Diyetisyenlik hizmeti ile sağlıklı kilo kontrolü ve dengeli beslenme.'
-        },
-      ],
-      link: [
-        {
-          rel: 'canonical',
-          href: 'https://nisasakar.com'
-        },  
-      ]
-    },
+      title: 'Nisa Sakar | Uzman Diyetisyen - Sağlıklı Beslenme ve Diyet Danışmanlığı',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        name: 'description',
+        content: 'Kişiye özel diyet programları, online diyet danışmanlığı, sağlıklı beslenme önerileri ve profesyonel diyetisyen hizmetleri.'
+      },
+      {
+        name: 'keywords',
+        content: 'diyetisyen, online diyet, beslenme danışmanlığı, kilo verme, sağlıklı beslenme, diyet programı, araklı oruç'
+      },
+      { name: 'author', content: 'Diyetisyen Nisa Sakar' },
+      { name: 'robots', content: 'index, follow' },
+      { name: 'language', content: 'Turkish' },
+      { name: 'revisit-after', content: '7 days' }
+    ],
+    link: [
+      { rel: 'icon', href: '/assets/images/ss.png' },
+      {
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'
+      },
+      {
+        rel: 'canonical',
+        href: 'https://nisasakar.com'
+      }
+    ]
+  }
   },
   
   
